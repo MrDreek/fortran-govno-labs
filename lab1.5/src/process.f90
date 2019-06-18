@@ -51,28 +51,29 @@ contains
         if (Swap(PersonsList)) &
                 call Swap_from_current(PersonsList)
         if (j < N) &
-                call Drop_down(PersonsList%next, j+1, N)
+                call Drop_down(PersonsList%next, j + 1, N)
     end subroutine Drop_down
 
     ! Перестановка местами двух эелементов списка, начиная с текущего.
     pure subroutine Swap_from_current(Current)
-        type(person), pointer  :: Current
+        type(person), pointer :: Current
 
-        type(person), pointer  :: tmp_pers
+        type(person), pointer :: tmp_pers
 
-        tmp_pers       => Current%next
-        Current%next   => Current%next%next
-        tmp_pers%next  => Current
-        Current        => tmp_pers
+        tmp_pers => Current%next
+        Current%next => Current%next%next
+        tmp_pers%next => Current
+        Current => tmp_pers
     end subroutine Swap_from_current
 
-    ! Проверка того, стоит ли менять местами текущего учащегося со следующим.
     pure logical function Swap(Current)
-        type(person), intent(in)  :: Current
+        type(person), intent(in) :: Current
 
         Swap = .false.
-        if (Current%Name > Current%next%Name) then
-            Swap = .true.
+        if(associated(Current%next)) then
+            if (Current%Name > Current%next%Name) then
+                Swap = .true.
+            end if
         end if
     end function Swap
 end module Process

@@ -1,0 +1,3 @@
+/home/futul/fortran/k.nik/l5/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/futul/fortran/k.nik/l5/cmake-build-debug/CMakeFiles/main.dir
+/home/futul/fortran/k.nik/l5/cmake-build-debug/CMakeFiles/edit_cache.dir

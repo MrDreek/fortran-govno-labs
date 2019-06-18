@@ -1,20 +1,18 @@
-program upr7
+program lab2
     use Environment
-    use Process
     use IO
+    use Process
 
     implicit none
-    character(LEN = *), parameter :: input_file = "../data/input.txt", output_file = "../data/output.txt", &
-            searchWord = "символ", replaceWord = "666666"
-    type(word), pointer :: words => Null()
 
-    words => Read_words(input_file)
+    character(LEN = *), parameter :: input_file = "../data/input.txt", output_file = "../data/output.txt"
+    type(line), pointer :: lines => Null(), result => Null()
+    integer(I_) :: amount = 0
 
-    if (Associated(Persons)) then
-        call Output_class_list(output_file, words, "Исходный text:", "rewind")
-        call Replace_Text(searchWord, Words, replaceWord)
-
+    lines => ReadList(input_file, output_file, amount)
+    if (Associated(lines)) then
+        call process_lines(lines, result, amount, 'asdn', 'aaaaa')
+        call OutputList(output_file, result)
     end if
 
-    call OutputList(output_file, words, "Изменёный список::", "append")
-end program upr7
+end program lab2

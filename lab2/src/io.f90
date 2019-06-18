@@ -3,61 +3,72 @@ module IO
 
     implicit none
 
-    type word
-        character(80, kind = CH_) :: value = ""
-        type(word), pointer :: next => Null()
-    end type word
+    integer, parameter :: LINE_LEN = 80
+
+    type line
+        character(LINE_LEN) :: value = ""
+        type(line), pointer :: next => Null()
+    end type line
 
 contains
-    function Read_words(Input_File) result(words)
-        type(word), pointer :: words
-        character(*), intent(in) :: Input_File
-        integer  In
+    function ReadList(InputFile, OutputFile, Amount) result(lines)
+        type(line), pointer :: lines
+        integer(I_), intent(inout) :: Amount
+        character(*), intent(in) :: InputFile, OutputFile
+        integer  In, Out
 
-        open (file = Input_File, encoding = E_, newunit = In)
-        words => Read_word(In)
+        open (file = InputFile, encoding = E_, newunit = In)
+            open (file = OutputFile, encoding = E_, newunit = Out)
+                lines => readNext(In, Out, Amount)
+            close (Out)
         close (In)
-    end function Read_words
+    endfunction ReadList
 
-    recursive function Read_word(In) result(wds)
-        type(word), pointer :: wds
-        integer, intent(in) :: In
+    recursive function readNext(In, Out, Amount) result(lines)
+        type(line), pointer :: lines
+        integer(I_), intent(inout) :: Amount
+        integer, intent(in) :: In, Out
         integer  IO
         character(:), allocatable :: format
 
-        allocate (wds)
-        format = '(a, /)'
-        read (In, format, iostat = IO) wds%value
+        allocate (lines)
+        format = '(a)'
+        read (In, format, iostat = IO) lines%value
         if (IO == 0) then
-            wds%next => Read_word(In)
+            write (Out, format, iostat = IO) lines%value
+            Amount = Amount + 1
+            lines%next => readNext(In, Out, Amount)
         else
-            deallocate (wds)
-            nullify (wds)
+            deallocate (lines)
+            nullify (lines)
         end if
-    end function Read_word
+    end function readNext
 
-    subroutine OutputList(Output_File, Words, List_Name, Position)
-        character(*), intent(in) :: Output_File, Position, List_Name
-        type(word), intent(in) :: Words
+    subroutine OutputList(filename, lines)
+        type(line) :: lines
+        character(*) :: filename
+        intent(in) :: filename, lines
+
         integer :: Out
-
-        open (file = Output_File, encoding = E_, position = Position, newunit = Out)
-        write (out, '(/a)') List_Name
-        call OutputWord(Out, Words)
+        open (file = filename, encoding = E_, position = 'append', newunit = Out)
+        write (Out, '(a)') "---------"
+        write (Out, '(a)') "С заменой"
+        write (Out, '(a)') "---------"
+        call WriteToFile(Out, lines)
         close (Out)
     end subroutine OutputList
 
-    recursive subroutine OutputWord(Out, Words)
-        integer, intent(in) :: Out
-        type(word), intent(in) :: Words
+    recursive subroutine WriteToFile(Out, lines)
+        type(line) :: lines
+        integer :: Out
+        intent(in) :: Out, lines
 
-        integer :: IO
         character(:), allocatable :: format
+        integer :: IO
 
-        format = '(a, 1x)'
-        write (Out, format, iostat = IO)  Words%value
-        call Handle_IO_status(IO, "writing word")
-        if (Associated(Words%next)) &
-                call OutputWord(Out, Words%next)
-    end subroutine OutputWord
+        format = '(a)'
+        write (Out, format, iostat = IO) lines%value
+        if (Associated(lines%next)) &
+                call WriteToFile(Out, lines%next)
+    end subroutine WriteToFile
 end module IO

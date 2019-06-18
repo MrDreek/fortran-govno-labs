@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.13)
+project(main Fortran)
+set(SCMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/modules)
+enable_language(Fortran)
+add_executable(main src/main.f90 src/environment.f90 src/io.f90 src/proc.f90)

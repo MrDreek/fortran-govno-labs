@@ -1,0 +1,1 @@
+/home/futul/intel/bin/ifort   -g CMakeFiles/main.dir/src/main.f90.o CMakeFiles/main.dir/src/environment.f90.o CMakeFiles/main.dir/src/io.f90.o CMakeFiles/main.dir/src/proc.f90.o  -o main 

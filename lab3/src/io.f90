@@ -35,10 +35,16 @@ contains
         type(record), pointer, intent(inout) :: list(:)
         type(record), pointer :: clist(:)
 
-        allocate(clist(size(list) + 1), source=list)
-        clist(size(clist)) = element
-        allocate(list, source=clist)
-        deallocate(clist)
+        if(associated(list)) then
+            allocate(clist(size(list) + 1), source=list)
+            clist(size(clist)) = element
+            allocate(list, source=clist)
+            deallocate(clist)
+        else
+            allocate(list(1))
+            list(1) = element
+        end if
+
     end subroutine AddToList
 
     subroutine OutputList(filename, Records)

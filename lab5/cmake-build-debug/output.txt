@@ -1,0 +1,5 @@
+Aa(BoC)aA
+A=t
+B=f
+C=t
+ T

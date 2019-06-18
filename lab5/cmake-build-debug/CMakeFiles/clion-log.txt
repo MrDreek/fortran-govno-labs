@@ -1,0 +1,11 @@
+/opt/CLion/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/futul/fortran/k.nik/l5
+-- The Fortran compiler identification is Intel 19.0.0.20190117
+-- Check for working Fortran compiler: /home/futul/intel/bin/ifort
+-- Check for working Fortran compiler: /home/futul/intel/bin/ifort  -- works
+-- Detecting Fortran compiler ABI info
+-- Detecting Fortran compiler ABI info - done
+-- Checking whether /home/futul/intel/bin/ifort supports Fortran 90
+-- Checking whether /home/futul/intel/bin/ifort supports Fortran 90 -- yes
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/futul/fortran/k.nik/l5/cmake-build-debug
